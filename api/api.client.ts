@@ -1,29 +1,32 @@
+import Config from "@/types/config"
+import { GameList } from "@/types/game"
+import Page from "@/types/page"
 import axios from "axios"
 
-const DEFAULT_LOCALE = 'en'
+// const DEFAULT_LOCALE = 'en'
 
-const axiosInstance = axios.create({
-  // URL to ideally be in a .env file and authentification to be added here
+const AXIOS_INSTANCE = axios.create({
   baseURL: 'https://casino.api.pikakasino.com/v1/pika',
-  timeout: 1000
+  timeout: 3000
 })
 
-type Params = {
+export type Params = {
   search: string
-  pageNumber: number
-  pageSize: number
+  pageNumber: string
+  pageSize: string
 };
 
-type FetchOptions = { params?: Params, locale?: string }
-const fetch = ( path: string, options?: FetchOptions ) => {
+type FetchOptions = { params?: Partial<Params> }
+const fetch = <T>( path: string, options?: FetchOptions ) => {
   
-  const locale = options?.locale ?? DEFAULT_LOCALE
   path = path.startsWith('/') ? path : `/${path}` 
 
-  return axiosInstance.get(`/${locale}${path}`, { params: options?.params })
+  return AXIOS_INSTANCE.get(path, { params: options?.params }).then( response => response.data as T )
 }
 
-export const fetchCategories = () => fetch("/config")
-export const fetchGames = ( params: Params ) => fetch("/games/tiles", { params })
+export const fetchConfig     = () => fetch<Config>("/en/config")
+export const fetchLobbies    = () => fetchConfig().then( config => config.menu )
+export const fetchPage       = ( category: string ) => fetch<Page>(`/pages/en/${category}`)
+export const fetchGames      = ( params?: Partial<Params> ) => fetch<GameList>("/en/games/tiles", { params })
 
 export default fetch

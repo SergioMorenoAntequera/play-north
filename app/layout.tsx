@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import Link from "next/link"
+import style from "./layout.module.scss"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -10,8 +12,26 @@ type RootLayoutProps = { children: React.ReactNode }
 export default function RootLayout({ children }: RootLayoutProps ) {
   
   return (<html lang="en">
-    <body>
-      {children}
+    <body className={style.body}>
+
+      <header className={style.wrapper}> 
+        <div className={`${style.content} container`}>
+          <Link href="/"> Lobbies </Link>
+          <Link href="/games"> All the games </Link>  
+        </div>
+      </header>
+      
+      <main className={`${style.main} container`}>
+        {children}
+      </main>
+      
+      <footer className={style.wrapper}> 
+        <div className={`${style.content} container`}>
+          <Link href="https://www.linkedin.com/in/seran-moreno/" about="blank">
+            Created by Sergio Moreno Antequuera
+          </Link>
+        </div>
+      </footer>
     </body>
   </html>)
 }

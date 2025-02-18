@@ -1,0 +1,18 @@
+
+.PageContent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  margin-top: 3em;
+}
+
+.GameListGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 12px;
+}
+
+.Filter {
+  margin-bottom: 1em;
+}

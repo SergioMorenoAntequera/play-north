@@ -1,4 +1,17 @@
 
+
+
 .HomePage {
-    
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
+
+.LobbyTitle {
+  margin-bottom: 34px; 
+}
+
+.LobbyItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+} 
