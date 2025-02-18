@@ -14,6 +14,7 @@ export type Params = {
   search: string
   pageNumber: string
   pageSize: string
+  gameCollections: string
 };
 
 type FetchOptions = { params?: Partial<Params> }
@@ -26,7 +27,7 @@ const fetch = <T>( path: string, options?: FetchOptions ) => {
 
 export const fetchConfig     = () => fetch<Config>("/en/config")
 export const fetchLobbies    = () => fetchConfig().then( config => config.menu )
-export const fetchPage       = ( category: string ) => fetch<Page>(`/pages/en/${category}`)
+export const fetchPage       = ( page: string ) => fetch<Page>(`/pages/en/${page}`)
 export const fetchGames      = ( params?: Partial<Params> ) => fetch<GameList>("/en/games/tiles", { params })
 
 export default fetch

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Game } from '@/types/game'
 import { PageComponent } from '@/types/page'
+import GamesList from '@/components/GamesList/GamesList'
 
 
 export type GameListProps = PageComponent & Partial<{
@@ -19,10 +20,12 @@ export type GameListProps = PageComponent & Partial<{
 
 function GameListPageComponent(props: GameListProps) {
 
-  return (<div>
-    GAMES LIST PAGE COMPONENT
-    {props.games?.map(g => <div key={g.id}> {g.gameText} </div>)}
-  </div>)
+  return (<GamesList params={{
+    gameCollections: props.listParameters?.collections.join(','),
+    pageNumber: props.listParameters?.pageNumber.toString(),
+    pageSize: props.listParameters?.pageSize.toString(),
+  }}/>)
+  
 }
 
 export default GameListPageComponent

@@ -1,22 +1,23 @@
 "use client"
 
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { GameList } from '@/types/game'
-import style from './GamesList.module.scss'
-import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { fetchGames, Params } from '@/api/api.client'
+import GameTile from '@/components/GameTile/GameTile'
+import { GameList } from '@/types/game'
+import style from './GamesList.module.scss'
 
-type GameListProps = { gamesData: Partial<GameList> }
-function GamesList({ gamesData }: GameListProps) {
+
+function GamesList({ params }: {params: Partial<Params>}) { 
   
   const searchParams = useSearchParams()
   
-  const [ pageGamesData, setPageGamesData ] = useState(gamesData)
+  const [ pageGamesData, setPageGamesData ] = useState<GameList>()
   const [ filters, setFilters ] = useState<Partial<Params>>({
-    search: searchParams.get('search') ?? '',
-    pageNumber: searchParams.get('pageNumber') ?? '',
-    pageSize: searchParams.get('pageSize') ?? '',
+    search: searchParams.get('search') ?? params.search ?? '',
+    pageNumber: searchParams.get('pageNumber') ?? params.pageNumber ?? '',
+    pageSize: searchParams.get('pageSize') ?? params.pageSize ?? '',
+    gameCollections: searchParams.get('gameCollections') ?? params.gameCollections ?? undefined
   })
 
 
@@ -71,21 +72,17 @@ function GamesList({ gamesData }: GameListProps) {
           <p> Page </p>
           <input type="number" value={filters.pageNumber} name='pageNumber' onChange={updateFilter} />  
         </div>
+
+        <div className={style.Filter}>
+          <p> Game collections </p>
+          <input type="text" value={filters.gameCollections} name='gameCollections' onChange={updateFilter} />  
+        </div>
       </div>
 
 
       <div className={style.GameListGrid}>
       
-        {pageGamesData?.items?.map(game => <div className={style.GameTile} key={game.id}>
-          <Image
-            width={300} 
-            height={300} 
-            src={game.image.original.src} 
-            alt={game.image.alt} 
-          />
-        
-          <h3> {game.gameText} </h3>
-        </div>)}
+        {pageGamesData?.items?.map(game => <GameTile key={game.id} game={game}/>)}
 
       </div>
     
